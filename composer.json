@@ -1,0 +1,28 @@
+{
+    "name": "jarnovanleeuwen/php-tikkie",
+    "type": "library",
+    "description": "Implementation of the Tikkie API interface.",
+    "keywords": [
+        "tikkie",
+        "payment",
+        "pay",
+        "api",
+        "abnamro"
+    ],
+    "homepage": "https://github.com/jarnovanleeuwen/php-tikkie",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jarno van Leeuwen",
+            "email": "vanleeuwen.jarno@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "PHPTikkie\\" : "src/" }
+    },
+    "require": {
+        "php": ">=7.0.0",
+        "guzzlehttp/guzzle": "~6.0",
+        "firebase/php-jwt": "~5.0"
+    }
+}
