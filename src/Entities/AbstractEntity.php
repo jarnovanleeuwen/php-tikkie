@@ -1,7 +1,6 @@
 <?php
 namespace PHPTikkie\Entities;
 
-use DomainException;
 use PHPTikkie\PHPTikkie;
 
 class AbstractEntity
@@ -10,6 +9,11 @@ class AbstractEntity
      * @var PHPTikkie
      */
     private $tikkie;
+
+    /**
+     * @var array
+     */
+    protected $fillableAttributes = [];
 
     public function __construct(PHPTikkie $tikkie)
     {
@@ -24,10 +28,8 @@ class AbstractEntity
     public function setAttributes(array $attributes)
     {
         foreach ($attributes as $key => $value) {
-            if (property_exists(static::class, $key)) {
+            if (in_array($key, $this->fillableAttributes)) {
                 $this->{$key} = $value;
-            } else {
-                throw new DomainException("Unknown property [{$key}]");
             }
         }
     }

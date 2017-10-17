@@ -36,21 +36,29 @@ class Platform extends AbstractEntity
     /**
      * @var string
      */
+    public $platformToken;
+
+    /**
+     * @var string
+     */
     public $platformUsage = self::USAGE_TYPE_MYSELF;
 
-    public function getRequestAttributes(): array
-    {
-        return [
-            'email' => $this->email,
-            'name' => $this->name,
-            'notificationURL' => $this->notificationURL,
-            'phoneNumber' => $this->phoneNumber,
-            'platformUsage' => $this->platformUsage,
-        ];
-    }
+    /**
+     * @var string
+     */
+    public $status;
 
-    public function save()
+    /**
+     * @var array
+     */
+    protected $fillableAttributes = [
+        'email', 'name', 'notificationURL', 'phoneNumber', 'platformUsage', 'platformToken', 'status'
+    ];
+
+    public function save(): self
     {
         $this->getTikkie()->persistPlatform($this);
+
+        return $this;
     }
 }

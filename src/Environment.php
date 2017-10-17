@@ -5,6 +5,7 @@ use Firebase\JWT\JWT;
 use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Exception\ClientException;
 use PHPTikkie\Exceptions\AccessTokenException;
+use PHPTikkie\Exceptions\RequestException;
 
 class Environment
 {
@@ -34,7 +35,7 @@ class Environment
     const SANDBOX_TOKEN_URL = 'https://auth-sandbox.abnamro.com/oauth/token';
 
     /**
-     * @var string
+     * @var AccessToken
      */
     private $accessToken;
 
@@ -134,13 +135,42 @@ class Environment
         }
     }
 
-    public function postRequest(string $endpoint, array $data)
+    public function getRequest(string $endpoint): Response
     {
-        $this->httpClient->request('POST', $endpoint, [
-            'headers' => [
-                'Authorization' => "Bearer {$this->getAccessToken()}"
-            ],
-            'json' => $data
-        ]);
+        try {
+            $response = $this->httpClient->request('GET', $endpoint, [
+                'headers' => [
+                    'Authorization' => "Bearer {$this->getAccessToken()}"
+                ]
+            ]);
+
+            if ($response->getStatusCode() == 200) {
+                return new Response($response);
+            }
+
+            throw new RequestException((string) $response->getBody());
+        } catch (ClientException $exception) {
+            throw new RequestException($exception->getMessage());
+        }
+    }
+
+    public function postRequest(string $endpoint, array $data): Response
+    {
+        try {
+            $response = $this->httpClient->request('POST', $endpoint, [
+                'headers' => [
+                    'Authorization' => "Bearer {$this->getAccessToken()}"
+                ],
+                'json' => $data
+            ]);
+
+            if ($response->getStatusCode() == 200) {
+                return new Response($response);
+            }
+
+            throw new RequestException((string) $response->getBody());
+        } catch (ClientException $exception) {
+            throw new RequestException($exception->getMessage());
+        }
     }
 }
