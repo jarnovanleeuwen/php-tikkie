@@ -135,13 +135,14 @@ class Environment
         }
     }
 
-    public function getRequest(string $endpoint): Response
+    public function getRequest(string $endpoint, array $parameters = []): Response
     {
         try {
             $response = $this->httpClient->request('GET', $endpoint, [
                 'headers' => [
                     'Authorization' => "Bearer {$this->getAccessToken()}"
-                ]
+                ],
+                'query' => $parameters
             ]);
 
             if ($response->getStatusCode() == 200) {

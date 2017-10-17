@@ -1,0 +1,115 @@
+<?php
+namespace PHPTikkie\Entities;
+
+use DateTimeImmutable;
+
+class PaymentRequest extends AbstractEntity
+{
+    /**
+     * @var string
+     */
+    public $amountInCents;
+
+    /**
+     * @var string
+     */
+    public $bankAccountToken;
+
+    /**
+     * @var bool
+     */
+    public $bankAccountYieldedTooFast;
+
+    /**
+     * @var DateTimeImmutable|null
+     */
+    public $created;
+
+    /**
+     * @var string
+     */
+    public $currency;
+
+    /**
+     * @var string
+     */
+    public $description;
+
+    /**
+     * @var DateTimeImmutable|null
+     */
+    public $expired;
+
+    /**
+     * @var Payment[]
+     */
+    public $payments;
+
+    /**
+     * @var string
+     */
+    public $paymentRequestUrl;
+
+    /**
+     * @var string
+     */
+    public $paymentRequestToken;
+
+    /**
+     * @var string
+     */
+    public $externalId;
+
+    /**
+     * @var string
+     */
+    public $platformToken;
+
+    /**
+     * @var string
+     */
+    public $status;
+
+    /**
+     * @var string
+     */
+    public $userToken;
+
+    /**
+     * @var array
+     */
+    protected $fillableAttributes = [
+        'amountInCents', 'bankAccountToken', 'bankAccountYieldedTooFast', 'currency', 'description',
+        'paymentRequestUrl', 'paymentRequestToken', 'externalId', 'platformToken', 'status', 'userToken'
+    ];
+
+    public function setAttributes(array $attributes)
+    {
+        parent::setAttributes($attributes);
+
+        foreach (['created', 'expired'] as $dateAttribute) {
+            if (isset($attributes[$dateAttribute])) {
+                $this->{$dateAttribute} = new DateTimeImmutable($attributes[$dateAttribute]);
+            }
+        }
+
+        if ($payments = $attributes['payments'] ?? null) {
+            $this->payments = [];
+
+            foreach ($payments as $paymentData) {
+                $payment = new Payment($this->getTikkie());
+
+                $payment->setAttributes($paymentData);
+
+                $this->payments[] = $payment;
+            }
+        }
+    }
+
+    public function save(): self
+    {
+        $this->getTikkie()->persistPaymentRequest($this);
+
+        return $this;
+    }
+}

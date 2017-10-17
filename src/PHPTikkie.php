@@ -1,6 +1,8 @@
 <?php
 namespace PHPTikkie;
 
+use DateTimeInterface;
+use PHPTikkie\Entities\PaymentRequest;
 use PHPTikkie\Entities\Platform;
 use PHPTikkie\Entities\User;
 
@@ -14,6 +16,75 @@ class PHPTikkie
     public function __construct(Environment $environment)
     {
         $this->environment = $environment;
+    }
+
+    public function newPaymentRequest(string $platformToken, string $userToken, string $bankAccountToken, array $attributes = []): PaymentRequest
+    {
+        $paymentRequest = new PaymentRequest($this);
+
+        $paymentRequest->platformToken = $platformToken;
+        $paymentRequest->userToken = $userToken;
+        $paymentRequest->bankAccountToken = $bankAccountToken;
+
+        $paymentRequest->setAttributes($attributes);
+
+        return $paymentRequest;
+    }
+
+    public function persistPaymentRequest(PaymentRequest $paymentRequest)
+    {
+        $response = $this->environment->postRequest("/v1/tikkie/platforms/{$paymentRequest->platformToken}/users/{$paymentRequest->userToken}/bankaccounts/{$paymentRequest->bankAccountToken}/paymentrequests", [
+            'amountInCents' => $paymentRequest->amountInCents,
+            'currency' => $paymentRequest->currency,
+            'description' => $paymentRequest->description,
+            'externalId' => $paymentRequest->externalId
+        ]);
+
+        $paymentRequest->setAttributes($response->getData());
+    }
+
+    public function paymentRequest(string $platformToken, string $userToken, string $paymentRequestToken): PaymentRequest
+    {
+        $response = $this->environment->getRequest("/v1/tikkie/platforms/{$platformToken}/users/{$userToken}/paymentrequests/{$paymentRequestToken}");
+
+        $paymentRequest = new PaymentRequest($this);
+
+        $paymentRequest->setAttributes($response->getData());
+
+        return $paymentRequest;
+    }
+
+    /**
+     * @var int $page Pagination: zero based index of the page to return.
+     * @var int $size Pagination: the number of records to return per page.
+     *
+     * @return PaymentRequest[]
+     */
+    public function paymentRequests(string $platformToken, string $userToken, int $page, int $size, DateTimeInterface $fromDate = null, DateTimeInterface $toDate = null): array
+    {
+        $paymentRequests = [];
+
+        $params = compact('page', 'size');
+
+        if ($fromDate) {
+            $params['fromDate'] = $fromDate->format('c');
+        }
+
+        if ($toDate) {
+            $params['toDate'] = $toDate->format('c');
+        }
+
+        $response = $this->environment->getRequest("/v1/tikkie/platforms/{$platformToken}/users/{$userToken}/paymentrequests", $params);
+
+        foreach ($response->getData()['paymentRequests'] as $paymentRequestData) {
+            $paymentRequest = new PaymentRequest($this);
+
+            $paymentRequest->setAttributes($paymentRequestData);
+
+            $paymentRequests[] = $paymentRequest;
+        }
+
+        return $paymentRequests;
     }
 
     public function newPlatform(array $attributes = []): Platform
