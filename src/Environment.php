@@ -70,7 +70,8 @@ class Environment
         $this->testMode = $testMode;
 
         $this->httpClient = new HttpClient([
-            'base_uri' => $testMode ? static::SANDBOX_API_URL : static::PRODUCTION_API_URL
+            'base_uri' => $testMode ? static::SANDBOX_API_URL : static::PRODUCTION_API_URL,
+            'http_errors' => false
         ]);
     }
 
@@ -129,7 +130,7 @@ class Environment
                 return new AccessToken($responseData->access_token, (int) $responseData->expires_in);
             }
 
-            throw new AccessTokenException((string) $response->getBody());
+            throw new AccessTokenException($response->getBody());
         } catch (ClientException $exception) {
             throw new AccessTokenException($exception->getMessage());
         }
@@ -149,7 +150,7 @@ class Environment
                 return new Response($response);
             }
 
-            throw new RequestException((string) $response->getBody());
+            throw new RequestException($response->getBody());
         } catch (ClientException $exception) {
             throw new RequestException($exception->getMessage());
         }
@@ -169,7 +170,7 @@ class Environment
                 return new Response($response);
             }
 
-            throw new RequestException((string) $response->getBody());
+            throw new RequestException($response->getBody());
         } catch (ClientException $exception) {
             throw new RequestException($exception->getMessage());
         }
