@@ -55,16 +55,13 @@ class PHPTikkie
     }
 
     /**
-     * @var int $page Pagination: zero based index of the page to return.
-     * @var int $size Pagination: the number of records to return per page.
-     *
      * @return PaymentRequest[]
      */
-    public function paymentRequests(string $platformToken, string $userToken, int $page, int $size, DateTimeInterface $fromDate = null, DateTimeInterface $toDate = null): array
+    public function paymentRequests(string $platformToken, string $userToken, int $offset, int $limit, DateTimeInterface $fromDate = null, DateTimeInterface $toDate = null): array
     {
         $paymentRequests = [];
 
-        $params = compact('page', 'size');
+        $params = compact('offset', 'limit');
 
         if ($fromDate) {
             $params['fromDate'] = $fromDate->format('c');
