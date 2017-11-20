@@ -4,11 +4,17 @@ namespace PHPTikkie;
 use Firebase\JWT\JWT;
 use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Psr7\Request;
 use PHPTikkie\Exceptions\AccessTokenException;
 use PHPTikkie\Exceptions\RequestException;
 
 class Environment
 {
+    /**
+     * @var float
+     */
+    const VERSION = 0.1;
+
     /**
      * @var string
      */
@@ -71,7 +77,8 @@ class Environment
 
         $this->httpClient = new HttpClient([
             'base_uri' => $testMode ? static::SANDBOX_API_URL : static::PRODUCTION_API_URL,
-            'http_errors' => false
+            'http_errors' => false,
+            'headers' => ['User-Agent' => 'PHPTikkie/'.static::VERSION]
         ]);
     }
 
@@ -101,8 +108,11 @@ class Environment
             throw new AccessTokenException("Cannot create JSON Web Token because no Private Key has been set.");
         }
 
+        $now = time();
+
         return JWT::encode([
-            'exp' => time() + 600, // Expires after one minute
+            'exp' => $now + 60, // Expires after one minute
+            'nbf' => $now - 60,
             'iss' => 'PHPTikkie',
             'sub' => $this->apiKey,
             'aud' => $this->testMode ? static::SANDBOX_TOKEN_URL : static::PRODUCTION_TOKEN_URL
@@ -118,7 +128,7 @@ class Environment
                 ],
                 'form_params' => [
                     'client_assertion' => $this->getJsonWebToken(),
-                    'client_assertion_type' => 'urn:ietf:params:oauth:client- assertion-type:jwt-bearer',
+                    'client_assertion_type' => 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
                     'grant_type' => 'client_credentials',
                     'scope' => 'tikkie'
                 ]
@@ -141,6 +151,7 @@ class Environment
         try {
             $response = $this->httpClient->request('GET', $endpoint, [
                 'headers' => [
+                    'API-Key' => $this->apiKey,
                     'Authorization' => "Bearer {$this->getAccessToken()}"
                 ],
                 'query' => $parameters
@@ -161,12 +172,13 @@ class Environment
         try {
             $response = $this->httpClient->request('POST', $endpoint, [
                 'headers' => [
+                    'API-Key' => $this->apiKey,
                     'Authorization' => "Bearer {$this->getAccessToken()}"
                 ],
                 'json' => $data
             ]);
 
-            if ($response->getStatusCode() == 200) {
+            if (in_array($response->getStatusCode(), [200, 201])) {
                 return new Response($response);
             }
 

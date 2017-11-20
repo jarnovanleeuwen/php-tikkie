@@ -4,7 +4,7 @@ namespace PHPTikkie\Exceptions;
 use Exception;
 use RuntimeException;
 
-class PHPTikkieException extends RuntimeException
+abstract class PHPTikkieException extends RuntimeException
 {
     /**
      * @var array

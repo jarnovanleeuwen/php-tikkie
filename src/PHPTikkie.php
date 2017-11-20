@@ -101,7 +101,7 @@ class PHPTikkie
         $response = $this->environment->postRequest("/v1/tikkie/platforms", [
             'email' => $platform->email,
             'name' => $platform->name,
-            'notificationURL' => $platform->notificationURL,
+            'notificationUrl' => $platform->notificationUrl,
             'phoneNumber' => $platform->phoneNumber,
             'platformUsage' => $platform->platformUsage,
         ]);

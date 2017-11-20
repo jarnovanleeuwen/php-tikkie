@@ -26,7 +26,7 @@ class Platform extends AbstractEntity
     /**
      * @var string
      */
-    public $notificationURL;
+    public $notificationUrl;
 
     /**
      * @var string
@@ -52,7 +52,7 @@ class Platform extends AbstractEntity
      * @var array
      */
     protected $fillableAttributes = [
-        'email', 'name', 'notificationURL', 'phoneNumber', 'platformUsage', 'platformToken', 'status'
+        'email', 'name', 'notificationUrl', 'phoneNumber', 'platformUsage', 'platformToken', 'status'
     ];
 
     public function save(): self

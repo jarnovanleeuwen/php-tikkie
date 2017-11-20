@@ -3,7 +3,7 @@ namespace PHPTikkie\Entities;
 
 use PHPTikkie\PHPTikkie;
 
-class AbstractEntity
+abstract class AbstractEntity
 {
     /**
      * @var PHPTikkie

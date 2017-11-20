@@ -17,7 +17,7 @@ class Response
     private $traceId;
 
     /**
-     * @var \stdClass|array
+     * @var array
      */
     private $data;
 
@@ -34,10 +34,7 @@ class Response
         }
     }
 
-    /**
-     * @return \stdClass|array
-     */
-    public function getData()
+    public function getData(): array
     {
         return $this->data;
     }
