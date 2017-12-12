@@ -54,9 +54,9 @@ class User extends AbstractEntity
     {
         parent::setAttributes($attributes);
 
-        if ($bankAccounts = $attributes['bankAccounts'] ?? null) {
-            $this->bankAccounts = [];
+        $this->bankAccounts = [];
 
+        if ($bankAccounts = $attributes['bankAccounts'] ?? null) {
             foreach ($bankAccounts as $bankAccountData) {
                 $bankAccount = new BankAccount($this->getTikkie());
 

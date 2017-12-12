@@ -43,7 +43,7 @@ class PaymentRequest extends AbstractEntity
     /**
      * @var Payment[]
      */
-    public $payments;
+    public $payments = [];
 
     /**
      * @var string
@@ -93,9 +93,9 @@ class PaymentRequest extends AbstractEntity
             }
         }
 
-        if ($payments = $attributes['payments'] ?? null) {
-            $this->payments = [];
+        $this->payments = [];
 
+        if ($payments = $attributes['payments'] ?? null) {
             foreach ($payments as $paymentData) {
                 $payment = new Payment($this->getTikkie());
 
