@@ -3,7 +3,7 @@ namespace PHPTikkie\Exceptions;
 
 use Exception;
 
-class RequestException extends PHPTikkieException
+class ResponseException extends PHPTikkieException
 {
     public function __construct($message, $code = 0, Exception $previous = null)
     {
