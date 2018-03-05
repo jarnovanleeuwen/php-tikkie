@@ -134,9 +134,7 @@ class Environment
                 ]
             ]);
 
-            if ($response->getStatusCode() == 200) {
-                $responseData = json_decode($response->getBody());
-
+            if ($response->getStatusCode() == 200 && is_object($responseData = json_decode($response->getBody()))) {
                 return new AccessToken($responseData->access_token, (int) $responseData->expires_in);
             }
 
@@ -167,7 +165,7 @@ class Environment
         }
     }
 
-    public function postRequest(string $endpoint, array $data): Response
+    public function postRequest(string $endpoint, array $data = []): Response
     {
         try {
             $response = $this->httpClient->request('POST', $endpoint, [
