@@ -1,6 +1,7 @@
 <?php
 namespace PHPTikkie;
 
+use DateTime;
 use DateTimeInterface;
 use PHPTikkie\Entities\PaymentRequest;
 use PHPTikkie\Entities\Platform;
@@ -64,11 +65,15 @@ class PHPTikkie
         $params = compact('offset', 'limit');
 
         if ($fromDate) {
-            $params['fromDate'] = $fromDate->format('c');
+            $params['fromDate'] = (new DateTime())->setTimestamp($fromDate->getTimestamp())
+                ->setTimezone('UTC')
+                ->format('Y-m-d\TH:i:s\Z');
         }
 
         if ($toDate) {
-            $params['toDate'] = $toDate->format('c');
+            $params['toDate'] = (new DateTime())->setTimestamp($toDate->getTimestamp())
+                ->setTimezone('UTC')
+                ->format('Y-m-d\TH:i:s\Z');
         }
 
         $response = $this->environment->getRequest("/v1/tikkie/platforms/{$platformToken}/users/{$userToken}/paymentrequests", $params);
