@@ -3,6 +3,7 @@ namespace PHPTikkie;
 
 use DateTime;
 use DateTimeInterface;
+use DateTimeZone;
 use PHPTikkie\Entities\PaymentRequest;
 use PHPTikkie\Entities\Platform;
 use PHPTikkie\Entities\User;
@@ -66,13 +67,13 @@ class PHPTikkie
 
         if ($fromDate) {
             $params['fromDate'] = (new DateTime())->setTimestamp($fromDate->getTimestamp())
-                ->setTimezone('UTC')
+                ->setTimezone(new DateTimeZone('UTC'))
                 ->format('Y-m-d\TH:i:s\Z');
         }
 
         if ($toDate) {
             $params['toDate'] = (new DateTime())->setTimestamp($toDate->getTimestamp())
-                ->setTimezone('UTC')
+                ->setTimezone(new DateTimeZone('UTC'))
                 ->format('Y-m-d\TH:i:s\Z');
         }
 
