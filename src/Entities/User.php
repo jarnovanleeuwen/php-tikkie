@@ -3,6 +3,9 @@ namespace PHPTikkie\Entities;
 
 class User extends AbstractEntity
 {
+    const STATUS_ACTIVE = 'ACTIVE';
+    const STATUS_INACTIVE = 'INACTIVE';
+
     /**
      * @var string
      */
@@ -49,6 +52,11 @@ class User extends AbstractEntity
     protected $fillableAttributes = [
         'bankAccountLabel', 'iban', 'name', 'phoneNumber', 'platformToken', 'status', 'userToken'
     ];
+
+    public function isActive(): bool
+    {
+        return $this->status === static::STATUS_ACTIVE;
+    }
 
     public function setAttributes(array $attributes)
     {

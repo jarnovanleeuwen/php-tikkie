@@ -1,12 +1,17 @@
 <?php
 namespace PHPTikkie;
 
-use DateTime;
 use DateTimeInterface;
-use DateTimeZone;
 use PHPTikkie\Entities\PaymentRequest;
 use PHPTikkie\Entities\Platform;
 use PHPTikkie\Entities\User;
+use PHPTikkie\Requests\CreatePaymentRequestRequest;
+use PHPTikkie\Requests\CreatePlatformRequest;
+use PHPTikkie\Requests\CreateUserRequest;
+use PHPTikkie\Requests\FetchPaymentRequestRequest;
+use PHPTikkie\Requests\FetchPaymentRequestsRequest;
+use PHPTikkie\Requests\FetchPlatformsRequest;
+use PHPTikkie\Requests\FetchUsersRequest;
 
 class PHPTikkie
 {
@@ -18,6 +23,11 @@ class PHPTikkie
     public function __construct(Environment $environment)
     {
         $this->environment = $environment;
+    }
+
+    public function getEnvironment(): Environment
+    {
+        return $this->environment;
     }
 
     public function newPaymentRequest(string $platformToken, string $userToken, string $bankAccountToken, array $attributes = []): PaymentRequest
@@ -35,19 +45,14 @@ class PHPTikkie
 
     public function persistPaymentRequest(PaymentRequest $paymentRequest)
     {
-        $response = $this->environment->postRequest("/v1/tikkie/platforms/{$paymentRequest->platformToken}/users/{$paymentRequest->userToken}/bankaccounts/{$paymentRequest->bankAccountToken}/paymentrequests", [
-            'amountInCents' => $paymentRequest->amountInCents,
-            'currency' => $paymentRequest->currency,
-            'description' => $paymentRequest->description,
-            'externalId' => $paymentRequest->externalId
-        ]);
+        $response = $this->environment->send(new CreatePaymentRequestRequest($paymentRequest));
 
         $paymentRequest->setAttributes($response->getData());
     }
 
     public function paymentRequest(string $platformToken, string $userToken, string $paymentRequestToken): PaymentRequest
     {
-        $response = $this->environment->getRequest("/v1/tikkie/platforms/{$platformToken}/users/{$userToken}/paymentrequests/{$paymentRequestToken}");
+        $response = $this->environment->send(new FetchPaymentRequestRequest($platformToken, $userToken, $paymentRequestToken));
 
         $paymentRequest = new PaymentRequest($this);
 
@@ -61,24 +66,9 @@ class PHPTikkie
      */
     public function paymentRequests(string $platformToken, string $userToken, int $offset, int $limit, DateTimeInterface $fromDate = null, DateTimeInterface $toDate = null): array
     {
+        $response = $this->environment->send(new FetchPaymentRequestsRequest($platformToken, $userToken, $offset, $limit, $fromDate, $toDate));
+
         $paymentRequests = [];
-
-        $params = compact('offset', 'limit');
-
-        if ($fromDate) {
-            $params['fromDate'] = (new DateTime())->setTimestamp($fromDate->getTimestamp())
-                ->setTimezone(new DateTimeZone('UTC'))
-                ->format('Y-m-d\TH:i:s\Z');
-        }
-
-        if ($toDate) {
-            $params['toDate'] = (new DateTime())->setTimestamp($toDate->getTimestamp())
-                ->setTimezone(new DateTimeZone('UTC'))
-                ->format('Y-m-d\TH:i:s\Z');
-        }
-
-        $response = $this->environment->getRequest("/v1/tikkie/platforms/{$platformToken}/users/{$userToken}/paymentrequests", $params);
-
         foreach ($response->getData()['paymentRequests'] as $paymentRequestData) {
             $paymentRequest = new PaymentRequest($this);
 
@@ -101,13 +91,7 @@ class PHPTikkie
 
     public function persistPlatform(Platform $platform)
     {
-        $response = $this->environment->postRequest("/v1/tikkie/platforms", [
-            'email' => $platform->email,
-            'name' => $platform->name,
-            'notificationUrl' => $platform->notificationUrl,
-            'phoneNumber' => $platform->phoneNumber,
-            'platformUsage' => $platform->platformUsage,
-        ]);
+        $response = $this->environment->send(new CreatePlatformRequest($platform));
 
         $platform->setAttributes($response->getData());
     }
@@ -117,10 +101,9 @@ class PHPTikkie
      */
     public function platforms(): array
     {
+        $response = $this->environment->send(new FetchPlatformsRequest);
+
         $platforms = [];
-
-        $response = $this->environment->getRequest("/v1/tikkie/platforms");
-
         foreach ($response->getData() as $platformData) {
             $platform = new Platform($this);
 
@@ -145,12 +128,7 @@ class PHPTikkie
 
     public function persistUser(User $user)
     {
-        $response = $this->environment->postRequest("/v1/tikkie/platforms/{$user->platformToken}/users", [
-            'name' => $user->name,
-            'phoneNumber' => $user->phoneNumber,
-            'iban' => $user->iban,
-            'bankAccountLabel' => $user->bankAccountLabel
-        ]);
+        $response = $this->environment->send(new CreateUserRequest($user));
 
         $user->setAttributes($response->getData());
     }
@@ -160,10 +138,9 @@ class PHPTikkie
      */
     public function users(string $platformToken): array
     {
+        $response = $this->environment->send(new FetchUsersRequest($platformToken));
+
         $users = [];
-
-        $response = $this->environment->getRequest("/v1/tikkie/platforms/{$platformToken}/users");
-
         foreach ($response->getData() as $userData) {
             $user = new User($this);
 

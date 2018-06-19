@@ -1,0 +1,17 @@
+HTTP/1.1 200 OK
+Date: Tue, 19 Jun 2018 09:20:42 GMT
+Content-Type: application/json
+Connection: keep-alive
+Trace-Id: 98de8459-377d-4834-a0a2-079f94f0f43d
+
+[
+    {
+        "name": "NewPlatform",
+        "platformToken": "platformtoken1",
+        "phoneNumber": "0601234567",
+        "email": "x@yz.com",
+        "notificationUrl": null,
+        "status": "ACTIVE",
+        "platformUsage": "PAYMENT_REQUEST_FOR_MYSELF"
+    }
+]
