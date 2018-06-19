@@ -157,8 +157,6 @@ class Environment
                 $request->getUri(),
                 $this->getRequestOptions($request)
             );
-
-            // print \GuzzleHttp\Psr7\str($response);
             
             if (in_array($response->getStatusCode(), [200, 201])) {
                 return new Response($response);
