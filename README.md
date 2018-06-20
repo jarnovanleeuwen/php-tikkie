@@ -6,7 +6,7 @@ Unofficial PHP implementation of the [Tikkie API](https://developer.abnamro.com/
 
 # Installation
 
-*PHPTikkie requires PHP 7+*
+*PHPTikkie requires PHP 7.1+*
 
 Add this package to your project using [Composer](https://getcomposer.org/):
 

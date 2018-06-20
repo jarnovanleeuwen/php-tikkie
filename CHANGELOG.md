@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Added
 - Added a test suite.
 
+## Changed
+- PHPTikkie now requires PHP 7.1+
+
 ## [0.1.2] - 2018-06-19
 ### Fixed
 - Cast `from` and `to` dates to UTC time zone. ([#1](https://github.com/jarnovanleeuwen/php-tikkie/pull/1))

@@ -3,6 +3,7 @@
 namespace PHPTikkie\Tests;
 
 use DateTime;
+use DateTimeZone;
 use PHPTikkie\Entities\Payment;
 use PHPTikkie\Entities\PaymentRequest;
 use PHPTikkie\Exceptions\RequestException;
@@ -13,8 +14,10 @@ class FetchPaymentRequestsTest extends TestCase
     {
         $this->setMockHttpResponse(['AccessToken.txt', 'FetchPaymentRequestsSuccess.txt']);
 
-        $from = new DateTime('2018-06-01 13:00');
-        $to = new DateTime('2018-06-05 01:00');
+        $timezone = new DateTimeZone('Europe/Amsterdam');
+
+        $from = new DateTime('2018-06-01 13:00', $timezone);
+        $to = new DateTime('2018-06-05 01:00', $timezone);
 
         $paymentRequests = $this->tikkie->paymentRequests('platformtoken1', 'usertoken1', 0, 10, $from, $to);
         $paymentRequest = $paymentRequests[0];
