@@ -3,14 +3,10 @@ namespace PHPTikkie\Entities;
 
 class Platform extends AbstractEntity
 {
-    /**
-     * @var string
-     */
-    const USAGE_TYPE_MYSELF = 'PAYMENT_REQUEST_FOR_MYSELF';
+    const STATUS_ACTIVE = 'ACTIVE';
+    const STATUS_INACTIVE = 'INACTIVE';
 
-    /**
-     * @var string
-     */
+    const USAGE_TYPE_MYSELF = 'PAYMENT_REQUEST_FOR_MYSELF';
     const USAGE_TYPE_OTHERS = 'PAYMENT_REQUEST_FOR_OTHERS';
 
     /**
@@ -24,7 +20,7 @@ class Platform extends AbstractEntity
     public $name;
 
     /**
-     * @var string
+     * @var string|null
      */
     public $notificationUrl;
 
@@ -54,6 +50,11 @@ class Platform extends AbstractEntity
     protected $fillableAttributes = [
         'email', 'name', 'notificationUrl', 'phoneNumber', 'platformUsage', 'platformToken', 'status'
     ];
+
+    public function isActive(): bool
+    {
+        return $this->status === static::STATUS_ACTIVE;
+    }
 
     public function save(): self
     {

@@ -4,40 +4,18 @@ namespace PHPTikkie;
 use Firebase\JWT\JWT;
 use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\RequestOptions;
 use PHPTikkie\Exceptions\AccessTokenException;
 use PHPTikkie\Exceptions\RequestException;
+use PHPTikkie\Requests\AbstractRequest;
 
 class Environment
 {
-    /**
-     * @var float
-     */
-    const VERSION = 0.1;
-
-    /**
-     * @var string
-     */
+    const VERSION = 1.0;
     const DEFAULT_HASH_ALGORITHM = 'RS256';
-
-    /**
-     * @var string
-     */
     const PRODUCTION_API_URL = 'https://api.abnamro.com';
-
-    /**
-     * @var string
-     */
     const PRODUCTION_TOKEN_URL = 'https://auth.abnamro.com/oauth/token';
-
-    /**
-     * @var string
-     */
     const SANDBOX_API_URL = 'https://api-sandbox.abnamro.com';
-
-    /**
-     * @var string
-     */
     const SANDBOX_TOKEN_URL = 'https://auth-sandbox.abnamro.com/oauth/token';
 
     /**
@@ -70,16 +48,16 @@ class Environment
      */
     private $testMode;
 
-    public function __construct(string $apiKey, bool $testMode = false)
+    public function __construct(string $apiKey, bool $testMode = false, array $requestOptions = [])
     {
         $this->apiKey = $apiKey;
         $this->testMode = $testMode;
 
-        $this->httpClient = new HttpClient([
+        $this->httpClient = new HttpClient(array_merge([
             'base_uri' => $testMode ? static::SANDBOX_API_URL : static::PRODUCTION_API_URL,
             'http_errors' => false,
             'headers' => ['User-Agent' => 'PHPTikkie/'.static::VERSION]
-        ]);
+        ], $requestOptions));
     }
 
     public function loadPrivateKey(string $path, string $hashAlgorithm = self::DEFAULT_HASH_ALGORITHM)
@@ -104,7 +82,7 @@ class Environment
 
     protected function getJsonWebToken(): string
     {
-        if ($this->privateKey === null) {
+        if (empty($this->privateKey)) {
             throw new AccessTokenException("Cannot create JSON Web Token because no Private Key has been set.");
         }
 
@@ -119,6 +97,9 @@ class Environment
         ], $this->privateKey, $this->hashAlgorithm);
     }
 
+    /**
+     * @throws AccessTokenException
+     */
     protected function requestAccessToken(): AccessToken
     {
         try {
@@ -144,38 +125,39 @@ class Environment
         }
     }
 
-    public function getRequest(string $endpoint, array $parameters = []): Response
+    protected function getRequestOptions(AbstractRequest $request): array
     {
-        try {
-            $response = $this->httpClient->request('GET', $endpoint, [
-                'headers' => [
-                    'API-Key' => $this->apiKey,
-                    'Authorization' => "Bearer {$this->getAccessToken()}"
-                ],
-                'query' => $parameters
-            ]);
+        $options = [
+            RequestOptions::HEADERS => [
+                'API-Key' => $this->apiKey,
+                'Authorization' => "Bearer {$this->getAccessToken()}",
+                'Accept' => 'application/json'
+            ]
+        ];
 
-            if ($response->getStatusCode() == 200) {
-                return new Response($response);
-            }
-
-            throw new RequestException($response->getBody());
-        } catch (ClientException $exception) {
-            throw new RequestException($exception->getMessage());
+        if ($parameters = $request->getParameters()) {
+            $options[RequestOptions::QUERY] = $parameters;
         }
+
+        if ($payload = $request->getPayload()) {
+            $options[RequestOptions::JSON] = $payload;
+        }
+
+        return array_merge_recursive($options, $request->getRequestOptions());
     }
 
-    public function postRequest(string $endpoint, array $data = []): Response
+    /**
+     * @throws RequestException
+     */
+    public function send(AbstractRequest $request): Response
     {
         try {
-            $response = $this->httpClient->request('POST', $endpoint, [
-                'headers' => [
-                    'API-Key' => $this->apiKey,
-                    'Authorization' => "Bearer {$this->getAccessToken()}"
-                ],
-                'json' => $data
-            ]);
-
+            $response = $this->httpClient->request(
+                $request->getMethod(),
+                $request->getUri(),
+                $this->getRequestOptions($request)
+            );
+            
             if (in_array($response->getStatusCode(), [200, 201])) {
                 return new Response($response);
             }

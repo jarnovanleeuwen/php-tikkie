@@ -1,0 +1,18 @@
+HTTP/1.1 401 Unauthorized
+Date: Tue, 19 Jun 2018 09:20:42 GMT
+Content-Type: application/json
+Connection: keep-alive
+Trace-Id: 98de8459-377d-4834-a0a2-079f94f0f43d
+
+{
+    "errors": [
+        {
+            "code": "ERR_2005_001",
+            "message": "The API Key is invalid",
+            "reference": "https://developer.abnamro.com/get-started#obtaining-an-api-key",
+            "traceId": "98de8459-377d-4834-a0a2-079f94f0f43d",
+            "status": 401,
+            "category":"INVALID_API_KEY"
+        }
+    ]
+}

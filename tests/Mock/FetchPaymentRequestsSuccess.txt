@@ -1,0 +1,33 @@
+HTTP/1.1 200 OK
+Date: Tue, 19 Jun 2018 09:20:42 GMT
+Content-Type: application/json
+Connection: keep-alive
+Trace-Id: 98de8459-377d-4834-a0a2-079f94f0f43d
+
+{
+    "paymentRequests": [
+        {
+            "paymentRequestToken": "paymentrequesttoken1",
+            "amountInCents": "123",
+            "currency": "EUR",
+            "description": "Last night's dinner",
+            "created": "2016-06-09T18:00:00.000Z",
+            "expired": null,
+            "status": "OPEN",
+            "bankAccountYieldedTooFast": false,
+            "externalId": "Invoice: 4567",
+            "payments": [
+                {
+                    "paymentToken": "paymenttoken1",
+                    "counterPartyName": "E. Xample",
+                    "amountInCents": "123",
+                    "amountCurrency": "EUR",
+                    "description": "Payment for tikkie",
+                    "created": "2016-06-09T18:00:00.000Z",
+                    "onlinePaymentStatus": "NEW"
+                }
+            ]
+        }
+    ],
+    "totalElements": 1
+}

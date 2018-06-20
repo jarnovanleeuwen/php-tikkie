@@ -1,0 +1,24 @@
+HTTP/1.1 400 Bad Request
+Date: Tue, 19 Jun 2018 10:24:12 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: keep-alive
+Server: Apache-Coyote/1.1
+Trace-Id: 3cbf4bc9-108c-4e02-ad6e-937c79d875e3
+X-Application-Context: application
+X-Content-Type-Options: nosniff
+X-Frame-Options: sameorigin
+X-XSS-Protection: 1; mode=block
+
+{
+    "errors": [
+        {
+            "code": "ERR_1100_004",
+            "message": "Field validation error",
+            "reference": "https://developer.abnamro.com/api/tikkie/technical-details",
+            "traceId": "3cbf4bc9-108c-4e02-ad6e-937c79d875e3",
+            "status": 400,
+            "category": "BAD_REQUEST"
+        }
+    ]
+}

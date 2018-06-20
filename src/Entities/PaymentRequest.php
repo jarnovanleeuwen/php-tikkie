@@ -5,6 +5,12 @@ use DateTimeImmutable;
 
 class PaymentRequest extends AbstractEntity
 {
+    const STATUS_OPEN = 'OPEN';
+    const STATUS_CLOSED = 'CLOSED';
+    const STATUS_EXPIRED = 'EXPIRED';
+    const STATUS_MAX_YIELD_REACHED = 'MAX_YIELD_REACHED';
+    const STATUS_MAX_SUCCESSFUL_PAYMENTS_REACHED = 'MAX_SUCCESSFUL_PAYMENTS_REACHED';
+    
     /**
      * @var string
      */

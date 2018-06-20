@@ -5,24 +5,9 @@ use DateTimeImmutable;
 
 class Payment extends AbstractEntity
 {
-    /**
-     * @var string
-     */
     const STATUS_NEW = 'NEW';
-
-    /**
-     * @var string
-     */
     const STATUS_NOT_PAID = 'NOT_PAID';
-
-    /**
-     * @var string
-     */
     const STATUS_PAID = 'PAID';
-
-    /**
-     * @var string
-     */
     const STATUS_PENDING = 'PENDING';
 
     /**
