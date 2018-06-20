@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [0.1.2] - 2018-06-19
 ### Fixed
-- Cast `from` and `to` dates to UTC time zone. (https://github.com/jarnovanleeuwen/php-tikkie/pull/1)
+- Cast `from` and `to` dates to UTC time zone. ([#1](https://github.com/jarnovanleeuwen/php-tikkie/pull/1))
 
 ## [0.1.1] - 2018-03-05
 ### Fixed
