@@ -1,4 +1,8 @@
+
+
 # <img src="https://user-images.githubusercontent.com/1358997/33891467-4e1a15ea-df56-11e7-98a0-ecc3e1ec07f0.png" width="64">
+
+[![Build Status](https://travis-ci.com/jarnovanleeuwen/php-tikkie.svg?branch=master)](https://travis-ci.com/jarnovanleeuwen/php-tikkie)
 
 #### Easily create payment requests through [Tikkie](https://tikkie.me/).
 
