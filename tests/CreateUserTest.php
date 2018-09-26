@@ -43,7 +43,7 @@ class CreateUserTest extends TestCase
         $this->setMockHttpResponse(['AccessToken.txt', 'ValidationError.txt']);
 
         $this->expectException(RequestException::class);
-        $this->expectExceptionMessage("[ERR_1100_004] Field validation error (see https://developer.abnamro.com/api/tikkie/technical-details)");
+        $this->expectExceptionMessage("[ERR_1100_004] Field validation error | traceId: 3cbf4bc9-108c-4e02-ad6e-937c79d875e3 | (see https://developer.abnamro.com/api/tikkie/technical-details)");
 
         $this->newUser()->save();
     }

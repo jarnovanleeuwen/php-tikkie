@@ -20,7 +20,7 @@ class EnvironmentTest extends TestCase
         $this->setMockHttpResponse('InvalidApiKey.txt');
 
         $this->expectException(AccessTokenException::class);
-        $this->expectExceptionMessage("[ERR_2005_001] The API Key is invalid (see https://developer.abnamro.com/get-started#obtaining-an-api-key)");
+        $this->expectExceptionMessage("[ERR_2005_001] The API Key is invalid | traceId: 98de8459-377d-4834-a0a2-079f94f0f43d | (see https://developer.abnamro.com/get-started#obtaining-an-api-key)");
 
         $this->tikkie->newPlatform()->save();
     }
