@@ -117,5 +117,5 @@ use PHPTikkie\Exceptions\PHPTikkieException;
 try {
     var_dump($tikkie->platforms());
 } catch (PHPTikkieException $exception) {
-    print $exception->getMessage(); // [ERR_2005_002] The API Key is invalid for the requested resource (see https://developer.abnamro.com/get-started#obtaining-an-api-key)
+    print $exception->getMessage(); // [ERR_2005_002] The API Key is invalid for the requested resource | traceId: 6fda2ce8-225d-4ca2-920a-b687c7aeb2f3 | (see https://developer.abnamro.com/get-started#obtaining-an-api-key)
 }

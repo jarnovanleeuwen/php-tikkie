@@ -22,7 +22,9 @@ abstract class PHPTikkieException extends RuntimeException
             if (count($this->errors) > 0) {
                 $error = $this->errors[0];
 
-                $message = "[{$error->code}] {$error->message} (see {$error->reference})";
+                $message = "[{$error->code}] {$error->message} "
+                    . "| traceId: {$error->traceId} | "
+                    . "(see {$error->reference})";
             }
         }
 
