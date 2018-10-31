@@ -3,7 +3,7 @@ namespace PHPTikkie;
 
 use Firebase\JWT\JWT;
 use GuzzleHttp\Client as HttpClient;
-use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\RequestOptions;
 use PHPTikkie\Exceptions\AccessTokenException;
 use PHPTikkie\Exceptions\RequestException;
@@ -120,7 +120,7 @@ class Environment
             }
 
             throw new AccessTokenException($response->getBody());
-        } catch (ClientException $exception) {
+        } catch (GuzzleException $exception) {
             throw new AccessTokenException($exception->getMessage());
         }
     }
@@ -163,7 +163,7 @@ class Environment
             }
 
             throw new RequestException($response->getBody());
-        } catch (ClientException $exception) {
+        } catch (GuzzleException $exception) {
             throw new RequestException($exception->getMessage());
         }
     }
