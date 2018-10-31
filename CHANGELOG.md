@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.2.2] - 2018-10-31
+### Changed
+- All Guzzle-related exceptions are now turned into a `RequestException`.
+
 ## [0.2.1] - 2018-09-27
 ### Changed
 - Trace ID of requests is now included in exception messages. ([#3](https://github.com/jarnovanleeuwen/php-tikkie/pull/3))
