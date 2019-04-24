@@ -11,7 +11,7 @@ use PHPTikkie\Requests\AbstractRequest;
 
 class Environment
 {
-    const VERSION = 1.0;
+    const VERSION = '0.2.3';
     const DEFAULT_HASH_ALGORITHM = 'RS256';
     const PRODUCTION_API_URL = 'https://api.abnamro.com';
     const PRODUCTION_TOKEN_URL = 'https://auth.abnamro.com/oauth/token';
