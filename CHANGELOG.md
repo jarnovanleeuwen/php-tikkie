@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.2.3] - 2019-04-24
+### Fixed
+- Due to a bug at Tikkie, dates may be returned as a epoch timestamp with milliseconds instead of an ISO-8601 formatted string. This has been reported to Tikkie, and while we wait support for those timestamps has been added to the library. 
+
 ## [0.2.2] - 2018-10-31
 ### Changed
 - All Guzzle-related exceptions are now turned into a `RequestException`.
