@@ -1,8 +1,6 @@
 <?php
 namespace PHPTikkie\Entities;
 
-use DateTimeImmutable;
-
 class PaymentRequest extends AbstractEntity
 {
     const STATUS_OPEN = 'OPEN';
@@ -42,7 +40,7 @@ class PaymentRequest extends AbstractEntity
     public $description;
 
     /**
-     * @var DateTimeImmutable|null
+     * @var \DateTimeImmutable|null
      */
     public $expired;
 
@@ -95,7 +93,7 @@ class PaymentRequest extends AbstractEntity
 
         foreach (['created', 'expired'] as $dateAttribute) {
             if (isset($attributes[$dateAttribute])) {
-                $this->{$dateAttribute} = new DateTimeImmutable($attributes[$dateAttribute]);
+                $this->{$dateAttribute} = $this->toDateTime($attributes[$dateAttribute]);
             }
         }
 

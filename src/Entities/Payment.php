@@ -1,8 +1,6 @@
 <?php
 namespace PHPTikkie\Entities;
 
-use DateTimeImmutable;
-
 class Payment extends AbstractEntity
 {
     const STATUS_NEW = 'NEW';
@@ -26,7 +24,7 @@ class Payment extends AbstractEntity
     public $counterPartyName;
 
     /**
-     * @var DateTimeImmutable
+     * @var \DateTimeImmutable
      */
     public $created;
 
@@ -62,7 +60,7 @@ class Payment extends AbstractEntity
         parent::setAttributes($attributes);
 
         if (isset($attributes['created'])) {
-            $this->created = new DateTimeImmutable($attributes['created']);
+            $this->created = $this->toDateTime($attributes['created']);
         }
     }
 }

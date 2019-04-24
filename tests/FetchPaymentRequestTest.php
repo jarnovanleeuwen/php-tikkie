@@ -2,6 +2,7 @@
 
 namespace PHPTikkie\Tests;
 
+use DateTimeImmutable;
 use PHPTikkie\Entities\Payment;
 use PHPTikkie\Entities\PaymentRequest;
 use PHPTikkie\Exceptions\RequestException;
@@ -51,5 +52,16 @@ class FetchPaymentRequestTest extends TestCase
         $this->expectExceptionMessage("[ERR_1100_004] Field validation error | traceId: 3cbf4bc9-108c-4e02-ad6e-937c79d875e3 | (see https://developer.abnamro.com/api/tikkie/technical-details)");
 
         $this->tikkie->paymentRequest('platformtoken1', 'usertoken1', 'paymentrequesttoken1');
+    }
+
+    // Due to a Tikkie bug, the API may return epoch timestamps with milliseconds instead of a ISO-8601 formatted string.
+    // I reported this on 24-04-2019.
+    public function testCreatedDateCanBeTimestampWithMilliseconds()
+    {
+        $payment = new Payment($this->tikkie);
+        $payment->setAttributes(['created' => '1554957274674']);
+
+        $this->assertInstanceOf(DateTimeImmutable::class, $payment->created);
+        $this->assertEquals('1554957274', $payment->created->getTimestamp());
     }
 }
