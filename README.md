@@ -34,6 +34,8 @@ $tikkie = new PHPTikkie($environment);
 
 ### Create platform
 ```php
+use PHPTikkie\Entities\Platform;
+
 $platform = $tikkie->newPlatform([
     // Mandatory attributes
     'name' => 'YourPlatform',
