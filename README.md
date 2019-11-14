@@ -70,8 +70,6 @@ $paymentRequest = $tikkie->newPaymentRequest($platformToken, $userToken, $bankAc
     'amountInCents' => '1250',
     'currency' => 'EUR',
     'description' => 'Thank you',
-
-    // Optional attributes
     'externalId' => 'Order 1234'
 ])->save();
 
