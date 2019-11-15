@@ -7,6 +7,8 @@ class Platform extends AbstractEntity
     const STATUS_INACTIVE = 'INACTIVE';
 
     const USAGE_TYPE_MYSELF = 'PAYMENT_REQUEST_FOR_MYSELF';
+    
+    /** @deprecated No longer mentioned in the official documentation. */
     const USAGE_TYPE_OTHERS = 'PAYMENT_REQUEST_FOR_OTHERS';
 
     /**
