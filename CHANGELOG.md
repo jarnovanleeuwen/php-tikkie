@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.2.4] - 2019-11-15
+### Fixed
+- `externalId` of payment requests is now documented as mandatory. ([#6](https://github.com/jarnovanleeuwen/php-tikkie/pull/6))
+
+### Deprecated
+- `Platform::USAGE_TYPE_OTHERS` is deprecated because it is no longer mentioned in the official documentation.
+
 ## [0.2.3] - 2019-04-24
 ### Fixed
 - Due to a bug at Tikkie, dates may be returned as a epoch timestamp with milliseconds instead of an ISO-8601 formatted string. This has been reported to Tikkie, and while we wait support for those timestamps has been added to the library. 
