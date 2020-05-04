@@ -12,7 +12,7 @@ Currently, I am not planning to update this library. This might change in the fe
 
 #### Easily create payment requests through [Tikkie](https://tikkie.me/).
 
-Unofficial PHP implementation of the [Tikkie Payment Request API](https://developer.abnamro.com/content/tikkie).
+Unofficial PHP implementation of the [Tikkie Payment Request API](https://developer.abnamro.com/content/tikkie-payment-request) (deprecated, available until 01-01-2021).
 
 # Installation
 
