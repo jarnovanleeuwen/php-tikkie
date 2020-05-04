@@ -4,9 +4,15 @@
 
 [![Build Status](https://travis-ci.com/jarnovanleeuwen/php-tikkie.svg?branch=master)](https://travis-ci.com/jarnovanleeuwen/php-tikkie)
 
+⚠️ Tikkie has announced that on **01-01-2021** it will stop supporting the Tikkie Payment Request API (the API that this library implements) in favor of the new Tikkie API. See https://medium.com/abn-amro-developer/abn-amro-introduces-the-new-tikkie-api-87c8bb54720a for more information, including a roadmap.
+
+Currently, I am not planning to update this library. This might change in the feature, but meanwhile PRs are welcome.
+
+---
+
 #### Easily create payment requests through [Tikkie](https://tikkie.me/).
 
-Unofficial PHP implementation of the [Tikkie API](https://developer.abnamro.com/content/tikkie).
+Unofficial PHP implementation of the [Tikkie Payment Request API](https://developer.abnamro.com/content/tikkie).
 
 # Installation
 
